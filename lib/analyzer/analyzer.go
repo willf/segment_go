@@ -4,8 +4,9 @@ package analyzer
 import (
 	"errors"
 	"path/filepath"
-	pd "probability_distribution"
 	"strings"
+
+	pd "github.com/willf/segment_go/lib/probability_distribution"
 )
 
 // An Analyzer contains two data tables of unigram and
@@ -27,6 +28,11 @@ import (
 // as log2(4090128330/431675447550), or about -6.72.
 // ModelPath points to a path with bigram data,
 // and ModelName the directory with the frequency data.
+
+func anaMakePath(model_path string, model_name string, prefix string, filename string) string {
+	return filepath.Join(model_path, model_name, prefix+filename)
+}
+
 type Analyzer struct {
 	ModelPath                      string
 	ModelName                      string
@@ -44,12 +50,12 @@ func New(model_path string, model_name string, max_token_length int) *Analyzer {
 	a.MaxTokenLength = max_token_length
 	a.UnigramProbabilityDistribution =
 		pd.New(
-			makePath(model_path, model_name, "", "total.tsv"),
-			makePath(model_path, model_name, "", "frequencies.tsv"))
+			anaMakePath(model_path, model_name, "", "total.tsv"),
+			anaMakePath(model_path, model_name, "", "frequencies.tsv"))
 	a.BigramProbabilityDistribution =
 		pd.New(
-			makePath(model_path, model_name, "2_", "total.tsv"),
-			makePath(model_path, model_name, "2_", "frequencies.tsv"))
+			anaMakePath(model_path, model_name, "2_", "total.tsv"),
+			anaMakePath(model_path, model_name, "2_", "frequencies.tsv"))
 	return &a
 }
 
@@ -72,10 +78,6 @@ func (a *Analyzer) LogProbTextGivenPrevious(token string, previous string) (lp f
 	}
 	lp, ok = a.UnigramProbabilityDistribution.LogProb(token)
 	return
-}
-
-func makePath(model_path string, model_name string, prefix string, filename string) string {
-	return filepath.Join(model_path, model_name, prefix+filename)
 }
 
 // TwoStrings is a tuple of two token strings

@@ -1,7 +1,6 @@
-package analyzer_test
+package analyzer
 
 import (
-	. "analyzer"
 	"fmt"
 	"math"
 	"os"
@@ -58,13 +57,13 @@ func ShouldNotEqual(tb testing.TB, exp, act interface{}) {
 	}
 }
 
-func makePath() string {
+func anaTestMakePath() string {
 	pwd, _ := os.Getwd()
 	return filepath.Join(pwd, "..", "..", "data")
 }
 
 func TestNew(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "test_bigram"
 	analyzer := New(model_path, model_name, 20)
 	lp, _ := analyzer.LogProb("the")
@@ -72,7 +71,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestUnigramFound(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "test_bigram"
 	analyzer := New(model_path, model_name, 20)
 	lp, _ := analyzer.LogProb("the")
@@ -80,7 +79,7 @@ func TestUnigramFound(t *testing.T) {
 }
 
 func TestUnigramNotFound(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "test_bigram"
 	analyzer := New(model_path, model_name, 20)
 	lp, _ := analyzer.LogProb("NOTFOUND")
@@ -88,7 +87,7 @@ func TestUnigramNotFound(t *testing.T) {
 }
 
 func TestBigramFound(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "test_bigram"
 	analyzer := New(model_path, model_name, 20)
 	lp, _ := analyzer.LogProbTextGivenPrevious("the", "of")
@@ -97,7 +96,7 @@ func TestBigramFound(t *testing.T) {
 }
 
 func TestBigramNotFound(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "test_bigram"
 	analyzer := New(model_path, model_name, 20)
 	lp, _ := analyzer.LogProbTextGivenPrevious("NOTFOUND", "NOTFOUND")
@@ -167,7 +166,7 @@ func TestProbTuplesMaxEmpty(t *testing.T) {
 }
 
 func TestSegmentRecurseWhenEmpty(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "test_bigram"
 	analyzer := New(model_path, model_name, 20)
 	text := ""
@@ -180,7 +179,7 @@ func TestSegmentRecurseWhenEmpty(t *testing.T) {
 }
 
 func TestSegmentRecurseWhenMemoized(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "test_bigram"
 	analyzer := New(model_path, model_name, 20)
 	text := "the"
@@ -195,7 +194,7 @@ func TestSegmentRecurseWhenMemoized(t *testing.T) {
 }
 
 func TestSegment(t *testing.T) {
-	model_path := makePath()
+	model_path := anaTestMakePath()
 	model_name := "small"
 	analyzer := New(model_path, model_name, 20)
 	text := "theboywholived"

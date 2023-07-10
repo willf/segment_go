@@ -1,12 +1,13 @@
 package main
 
 import (
-	"analyzer"
 	"bufio"
 	"flag"
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/willf/segment_go/lib/analyzer"
 )
 
 var model_name = flag.String("model", "twitter", "Model name")
